@@ -1,6 +1,7 @@
 import os
 import psycopg2
 
+
 def get_db_connection():
     connection = psycopg2.connect(
         host='localhost',
@@ -24,7 +25,7 @@ def consolidate_comments_in_hoots(hoots_with_comments):
                     {"comment_text": hoot["comment_text"],
                      "comment_id": hoot["comment_id"],
                      "comment_author_username": hoot["comment_author_username"]
-                    })
+                     })
                 break
 
         # If the hoot doesn't exist in consolidated_hoots, add it
@@ -35,7 +36,7 @@ def consolidate_comments_in_hoots(hoots_with_comments):
                     {"comment_text": hoot["comment_text"],
                      "comment_id": hoot["comment_id"],
                      "comment_author_username": hoot["comment_author_username"]
-                    }
+                     }
                 )
             del hoot["comment_id"]
             del hoot["comment_text"]
