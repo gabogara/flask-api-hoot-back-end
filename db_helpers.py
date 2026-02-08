@@ -11,7 +11,6 @@ def get_db_connection():
     )
     return connection
 
-
 def consolidate_comments_in_hoots(hoots_with_comments):
     print(hoots_with_comments)
     consolidated_hoots = []
@@ -24,7 +23,8 @@ def consolidate_comments_in_hoots(hoots_with_comments):
                 consolidated_hoot["comments"].append(
                     {"comment_text": hoot["comment_text"],
                      "comment_id": hoot["comment_id"],
-                     "comment_author_username": hoot["comment_author_username"]
+                     "comment_author_username": hoot["comment_author_username"],
+                     "createdAt": hoot.get("commentCreatedAt"),
                      })
                 break
 
@@ -35,12 +35,17 @@ def consolidate_comments_in_hoots(hoots_with_comments):
                 hoot["comments"].append(
                     {"comment_text": hoot["comment_text"],
                      "comment_id": hoot["comment_id"],
-                     "comment_author_username": hoot["comment_author_username"]
+                     "comment_author_username": hoot["comment_author_username"],
+                     "createdAt": hoot.get("commentCreatedAt")  
                      }
                 )
-            del hoot["comment_id"]
-            del hoot["comment_text"]
-            del hoot["comment_author_username"]
+
+            # safer deletes (same effect, no KeyError)
+            hoot.pop("comment_id", None)
+            hoot.pop("comment_text", None)
+            hoot.pop("comment_author_username", None)
+            hoot.pop("commentCreatedAt", None)
+
             consolidated_hoots.append(hoot)
 
     return consolidated_hoots
